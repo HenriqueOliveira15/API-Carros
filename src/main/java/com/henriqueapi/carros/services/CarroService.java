@@ -64,9 +64,7 @@ public class CarroService {
     }
 
     private CarroResponseDTO mapToResponseDTO(Carro carro){
-
         CarroResponseDTO dto = new CarroResponseDTO();
-
         dto.setId(carro.getId());
         dto.setNome(carro.getNome());
         dto.setMarca(carro.getMarca());

@@ -2,7 +2,6 @@ package com.henriqueapi.carros.controller;
 
 import com.henriqueapi.carros.dtos.CarroRequestDTO;
 import com.henriqueapi.carros.dtos.CarroResponseDTO;
-import com.henriqueapi.carros.entity.Carro;
 import com.henriqueapi.carros.services.CarroService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.henriqueapi.carros.repository.CarroRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/carros")
