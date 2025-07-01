@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class Testecontroller {
 
-
-
-
     @PostMapping("/test")
     public ResponseEntity<String> test(){
         return ResponseEntity.ok("OK");

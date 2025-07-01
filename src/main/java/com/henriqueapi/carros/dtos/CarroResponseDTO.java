@@ -1,22 +1,17 @@
-package com.henriqueapi.carros.entity;
+package com.henriqueapi.carros.dtos;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "tb_carros")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Carro {
+public class CarroResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String marca;

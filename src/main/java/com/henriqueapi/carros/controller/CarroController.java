@@ -1,13 +1,15 @@
 package com.henriqueapi.carros.controller;
 
+import com.henriqueapi.carros.dtos.CarroRequestDTO;
+import com.henriqueapi.carros.dtos.CarroResponseDTO;
 import com.henriqueapi.carros.entity.Carro;
+import com.henriqueapi.carros.services.CarroService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.henriqueapi.carros.repository.CarroRepository;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,50 +20,40 @@ public class CarroController {
     @Autowired
     private CarroRepository repository;
 
+    @Autowired
+    private CarroService service;
+
     @GetMapping
-    public ResponseEntity<List<Carro>> list(){
-        List<Carro> result = repository.findAll();
-        return ResponseEntity.ok(result);
+    public ResponseEntity<List<CarroResponseDTO>> findAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Carro> getCarroById(@PathVariable Long id) {
-        Optional<Carro> carro = repository.findById(id);
-        if (carro.isPresent()) {
-            return ResponseEntity.ok(carro.get());
-        } else {
+    public ResponseEntity<CarroResponseDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<CarroResponseDTO> create(@RequestBody CarroRequestDTO dto) {
+        return ResponseEntity.ok(service.create(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CarroResponseDTO> update (@PathVariable Long id, @RequestBody CarroRequestDTO dto){
+        try{
+            CarroResponseDTO response = service.update(id, dto);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping
-    public ResponseEntity<String> create(@RequestBody Carro carro) {
-        Carro savedCarro = repository.save(carro);
-        return ResponseEntity.status(201).body("Carro criado com sucesso!");
-    }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<Carro> update(@PathVariable Long id, @RequestBody Carro updatedCarro) {
-        Optional<Carro> existingCarro = repository.findById(id);
-        if (existingCarro.isPresent()) {
-            Carro carro = existingCarro.get();
-            carro.setNome(updatedCarro.getNome());
-            carro.setMarca(updatedCarro.getMarca());
-            carro.setAno(updatedCarro.getAno());
-            carro.setCor(updatedCarro.getCor());
-            Carro savedCarro = repository.save(carro);
-            return ResponseEntity.ok(savedCarro);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Optional<Carro> existingCarro = repository.findById(id);
-        if (existingCarro.isPresent()) {
-            repository.delete(existingCarro.get());
+        try {
+            service.delete(id);
             return ResponseEntity.noContent().build();
-        } else {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
