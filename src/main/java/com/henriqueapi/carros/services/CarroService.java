@@ -6,10 +6,9 @@ import com.henriqueapi.carros.entity.Carro;
 import com.henriqueapi.carros.repository.CarroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CarroService {
@@ -45,10 +44,9 @@ public class CarroService {
         return mapToResponseDTO(atualizado);
     }
 
-    public List<CarroResponseDTO> findAll() {
-        return  repository.findAll().stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+    public Page<CarroResponseDTO> findAll(Pageable pageable) {
+        return  repository.findAll(pageable)
+                .map(this::mapToResponseDTO);
     }
 
     public CarroResponseDTO findById(Long id){

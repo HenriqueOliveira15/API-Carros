@@ -4,12 +4,13 @@ import com.henriqueapi.carros.dtos.CarroRequestDTO;
 import com.henriqueapi.carros.dtos.CarroResponseDTO;
 import com.henriqueapi.carros.services.CarroService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.henriqueapi.carros.repository.CarroRepository;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/carros")
@@ -22,8 +23,8 @@ public class CarroController {
     private CarroService service;
 
     @GetMapping
-    public ResponseEntity<List<CarroResponseDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<Page<CarroResponseDTO>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(service.findAll(pageable));
     }
 
     @GetMapping("/{id}")
